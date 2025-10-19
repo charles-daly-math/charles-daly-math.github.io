@@ -1,0 +1,72 @@
+body {
+    padding: 0;
+    margin: 0;
+    background: #f2f6e9;
+    display: flex;
+    flex-direction: column;
+}
+
+.mathgif {
+    width: 21rem;
+    height: 21rem;
+    object-fit: cover;
+    object-position: center;
+    overflow: hidden;
+}
+
+.friendpic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+.navbar {
+    width: auto;
+    background-image: url("Pictures/beach.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-weight: 500;
+}
+
+.nav-link,
+.navbar-brand {
+    color: #fff;
+    cursor: pointer;
+}
+
+.nav-link {
+    margin-right: 1em !important;
+}
+
+.nav-link:hover {
+    color: #3493f1;
+    text-align: left;
+}
+
+
+.navbar-collapse {
+        justify-content: flex-end;
+}
+
+.features {
+	margin: 4em auto;
+	padding: 1em;
+	position: relative;
+}
+.feature-title {
+	color: #333;
+	font-size: 1.3rem;
+	font-weight: 700;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+}
+.features img {
+	-webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+	margin-bottom: 16px;
+}
+
+
+
