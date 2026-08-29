@@ -1,72 +1,1064 @@
+/* =========================================================
+   COLOR AND SIZE VARIABLES
+   ========================================================= */
+
+/*
+   Variables let you change commonly used colors and measurements
+   in one location.
+
+   For example, changing --page-background changes both the main
+   page and footer background colors.
+*/
+:root {
+    --page-background: #e7eef2;
+    --body-text: #292f2b;
+    --soft-text: #384139;
+    --heading-text: #26352d;
+    --link-color: #176a9c;
+    --link-hover: #0d4668;
+    --navbar-fallback: #315766;
+    --white: #ffffff;
+
+    --page-width: 1480px;
+}
+
+
+/* =========================================================
+   GENERAL PAGE STYLING
+   ========================================================= */
+
+html {
+    scroll-behavior: smooth;
+
+    /*
+       Always reserves space for the vertical scrollbar.
+       This prevents the centered navigation from shifting
+       slightly between short and long pages.
+    */
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+
 body {
-    padding: 0;
+    min-height: 100vh;
     margin: 0;
-    background: #f2f6e9;
+
     display: flex;
     flex-direction: column;
+
+    color: var(--body-text);
+    background-color: var(--page-background);
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
-.mathgif {
-    width: 21rem;
-    height: 21rem;
-    object-fit: cover;
-    object-position: center;
-    overflow: hidden;
+/* Ordinary links within page content. */
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
 }
 
-.friendpic {
+a:hover {
+    color: var(--link-hover);
+}
+
+/*
+   Prevent images from becoming wider than their containers.
+   height: auto preserves their proportions.
+*/
+img {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
+    max-width: 100%;
+    height: auto;
 }
 
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+/*
+   This link is initially placed above the screen. It becomes
+   visible when a keyboard user presses Tab.
+*/
+.skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    padding: 0.75rem 1rem;
+
+    color: var(--white);
+    background-color: #142f3c;
+
+    transform: translateY(-120%);
+}
+
+.skip-link:focus {
+    color: var(--white);
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+/*
+   The gradient darkens the beach photograph slightly so that
+   the white text remains readable.
+
+   Increase 0.22 to darken the photograph.
+   Decrease 0.22 to brighten it.
+*/
 .navbar {
-    width: auto;
-    background-image: url("Pictures/beach.jpg");
+    min-height: 78px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    background-color: var(--navbar-fallback);
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.22),
+            rgba(0, 0, 0, 0.22)
+        ),
+        url("Pictures/beach.jpg");
+
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
-    font-weight: 500;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
 }
 
-.nav-link,
+/*
+   Limits the navigation's width on very large monitors.
+*/
+.nav-width {
+    width: 100%;
+    max-width: 1420px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+}
+
+/* The "Charles Daly" link at the left. */
 .navbar-brand {
-    color: #fff;
-    cursor: pointer;
+    margin-right: 2rem;
+
+    color: var(--white) !important;
+    font-size: 1.55rem;
+    font-weight: 650;
+    text-decoration: none;
 }
 
-.nav-link {
-    margin-right: 1em !important;
+/*
+   The main navigation links.
+
+   font-size controls the size of Home, Research, Visualization,
+   Teaching, and Miscellaneous.
+*/
+.navbar .nav-link {
+    margin-right: 0.2rem;
+    margin-left: 0.2rem;
+    padding: 0.45rem 0.7rem !important;
+
+    color: var(--white) !important;
+    background-color: transparent !important;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: color 150ms ease;
 }
 
-.nav-link:hover {
-    color: #3493f1;
-    text-align: left;
+/*
+   Hovering changes a navigation link to the page's blue-gray
+   background color.
+*/
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    color: var(--page-background) !important;
+    background-color: transparent !important;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/*
+   The active page is marked only by an underline.
+*/
+.navbar .active .nav-link {
+    color: var(--white) !important;
+    background-color: transparent !important;
+    border: 0;
+    box-shadow: none;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.navbar .active .nav-link:hover,
+.navbar .active .nav-link:focus {
+    color: var(--page-background) !important;
+}
+
+.navbar-toggler {
+    margin-left: auto;
+    border-color: rgba(255, 255, 255, 0.8);
 }
 
 
-.navbar-collapse {
-        justify-content: flex-end;
+/* =========================================================
+   SHARED MAIN-CONTENT STYLES
+   ========================================================= */
+
+/*
+   Used on every page. It allows the content to be wide without
+   touching the browser edges.
+*/
+.page-content {
+    width: 100%;
+    max-width: var(--page-width);
+    margin-right: auto;
+    margin-left: auto;
+
+    flex: 1;
+
+    padding: 1.4rem 1.5rem 1rem;
 }
 
-.features {
-	margin: 4em auto;
-	padding: 1em;
-	position: relative;
+/*
+   standard-page is used by Research, Teaching, Visualization,
+   and Miscellaneous.
+*/
+.standard-page {
+    padding-top: 1.75rem;
 }
+
+/* Main h1 heading on the non-home pages. */
+.page-title {
+    margin-top: 0;
+    margin-bottom: 0.55rem;
+
+    color: var(--heading-text);
+    font-size: clamp(1.65rem, 2.6vw, 2rem);
+    font-weight: 650;
+    line-height: 1.2;
+}
+
+/*
+   Introductory paragraphs on the non-home pages.
+*/
+.page-lead {
+    margin-top: 0;
+    margin-bottom: 1rem;
+
+    color: #303832;
+    font-size: 1.08rem;
+    line-height: 1.58;
+}
+
+/*
+   Secondary headings such as Papers and course-list headings.
+*/
+.content-heading {
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+
+    color: var(--heading-text);
+    font-size: 1.3rem;
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   HOMEPAGE LAYOUT
+   ========================================================= */
+
+/*
+   This class is used by index.html.
+
+   The first column contains the portrait.
+   The second column contains all homepage text and images.
+*/
+.homepage-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(270px, 360px)
+        minmax(0, 1fr);
+
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.portrait-column,
+.content-column {
+    min-width: 0;
+}
+
+section {
+    margin-bottom: 1.05rem;
+}
+
+/*
+   Shared underlined headings used on index.html.
+*/
+.section-title {
+    margin-top: 0;
+    margin-bottom: 0.55rem;
+
+    color: var(--heading-text);
+    font-size: 1.32rem;
+    font-weight: 650;
+    line-height: 1.25;
+
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+}
+
+.lead {
+    margin-bottom: 0.7rem;
+
+    color: #303832;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   HOMEPAGE PORTRAIT
+   ========================================================= */
+
+.profile-picture {
+    display: block;
+
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+
+    border: 4px solid var(--white);
+    border-radius: 3px;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   HOMEPAGE CONTACT INFORMATION
+   ========================================================= */
+
+.contact-section {
+    margin-top: 0.2rem;
+    margin-bottom: 1.15rem;
+}
+
+.contact-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.contact-list li {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.contact-list strong {
+    font-weight: 650;
+}
+
+.email-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.email-address {
+    display: inline-block;
+
+    width: min(100%, 450px);
+    max-height: 58px;
+
+    object-fit: contain;
+    object-position: left center;
+}
+
+
+/* =========================================================
+   HOMEPAGE VISUALIZATION PREVIEW
+   ========================================================= */
+
+.visualizations {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.visualizations .section-title {
+    margin-bottom: 0.35rem;
+}
+
+.gallery-column {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.math-figure {
+    width: 100%;
+    margin: 0;
+}
+
+.image-area {
+    height: 135px;
+    margin-bottom: 0.4rem;
+    padding: 0.2rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.math-figure figcaption {
+    color: var(--soft-text);
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   RESEARCH PAGE
+   ========================================================= */
+
+/*
+   Both research illustrations float to the right on wide screens.
+
+   This preserves the flowing text-and-image arrangement of the
+   original research page.
+*/
+.research-figure {
+    float: right;
+    clear: right;
+
+    width: min(38%, 520px);
+    margin: 0 0 1rem 2rem;
+}
+
+.research-figure img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.research-figure-top {
+    margin-top: 0.2rem;
+}
+
+/*
+   The second figure begins near the Papers section.
+*/
+.research-figure-lower {
+    margin-top: 0.5rem;
+}
+
+.resource-section {
+    margin-top: 1.35rem;
+}
+
+/*
+   Resource lists have comfortable indentation and spacing but
+   remain more compact than Bootstrap's default lead text.
+*/
+.resource-list {
+    margin: 0;
+    padding-left: 1.6rem;
+
+    font-size: 1.02rem;
+    line-height: 1.5;
+}
+
+.resource-list li {
+    margin-bottom: 0.65rem;
+}
+
+/* Slides and Notes retain bullets only if desired. */
+.resource-section ul.resource-list {
+    list-style: none;
+    padding-left: 0.75rem;
+}
+
+.numbered-list {
+    list-style-position: outside;
+}
+
+
+/* =========================================================
+   TEACHING PAGE
+   ========================================================= */
+
+.page-introduction {
+    margin-bottom: 2.2rem;
+}
+
+/*
+   The left column contains course lists.
+   The right column contains the handwritten lecture notes.
+*/
+.teaching-layout {
+    display: grid;
+    grid-template-columns:
+        minmax(310px, 38%)
+        minmax(0, 1fr);
+
+    gap: 2rem;
+    align-items: start;
+}
+
+.course-column {
+    min-width: 0;
+}
+
+.course-section {
+    margin-bottom: 2rem;
+}
+
+/*
+   Removes bullets while retaining a small indentation like the
+   original page.
+*/
+.course-list {
+    margin: 0;
+    padding: 0 0 0 1.7rem;
+    list-style: none;
+}
+
+.course-list li {
+    margin-bottom: 0.55rem;
+    font-size: 1.02rem;
+    line-height: 1.5;
+}
+
+/*
+   The teaching image fills the right column but does not exceed
+   a comfortable size.
+*/
+/*
+   Contains the teaching illustrations in the right-hand column.
+
+   flex-direction: column stacks the pictures vertically.
+   gap controls the space between the two pictures.
+*/
+.teaching-illustrations {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/*
+   Removes the browser's default margin around each figure.
+*/
+.teaching-figure {
+    width: 100%;
+    margin: 0;
+}
+
+/*
+   Each picture fills the width of the illustration column while
+   retaining its original proportions.
+*/
+.teaching-figure img {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    object-fit: contain;
+    object-position: top center;
+}
+
+
+/* =========================================================
+   VISUALIZATION PAGE
+   ========================================================= */
+
+/*
+   CSS Grid creates three equal columns on large screens.
+*/
+.visualization-grid {
+    margin-top: 3.5rem;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem 2rem;
+}
+
+/*
+   Each card contains a heading, image, and paragraph.
+   There is no visible box, preserving the original page's style.
+*/
+.visualization-card {
+    min-width: 0;
+    margin: 0;
+}
+
 .feature-title {
-	color: #333;
-	font-size: 1.3rem;
-	font-weight: 700;
-	margin-bottom: 20px;
-	text-transform: uppercase;
-}
-.features img {
-	-webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-	-moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-	margin-bottom: 16px;
+    min-height: 2.6em;
+    margin: 0 0 0.75rem;
+
+    color: #333b37;
+    font-size: 1.16rem;
+    font-weight: 750;
+    line-height: 1.3;
+    text-transform: uppercase;
 }
 
+/*
+   Equal-sized image areas keep the gallery aligned even when
+   source GIFs and JPEGs have different proportions.
+*/
+.visualization-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 0.9rem;
+    padding: 0.45rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ffffff;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+}
+
+.visualization-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.visualization-card p {
+    margin: 0;
+
+    color: var(--body-text);
+    font-size: 0.98rem;
+    line-height: 1.5;
+}
 
 
+/* =========================================================
+   MISCELLANEOUS PAGE
+   ========================================================= */
+
+.misc-section {
+    margin-bottom: 2rem;
+}
+
+/* Large, centered Shavey sticker. */
+.shavey-feature {
+    width: min(100%, 440px);
+    margin: 1.25rem auto 1rem;
+}
+
+.shavey-feature img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.thank-you-section {
+    margin-top: 0.5rem;
+}
+
+/*
+   Two centered columns for the thank-you illustration and
+   family photograph.
+*/
+.thank-you-gallery {
+    width: min(100%, 900px);
+    margin: 2rem auto 0;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: center;
+}
+
+.thank-you-gallery figure {
+    margin: 0;
+}
+
+.thank-you-gallery img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    margin-top: auto;
+    padding: 0.65rem 0;
+
+    color: #495159;
+    background-color: var(--page-background);
+
+    /* Removes the old horizontal line above the footer. */
+    border: 0;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+
+/* =========================================================
+   MEDIUM DESKTOPS AND TABLETS
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .page-content {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    /* Slightly reduce the homepage portrait at this width. */
+    .homepage-layout {
+        grid-template-columns:
+            minmax(245px, 315px)
+            minmax(0, 1fr);
+
+        gap: 1.25rem;
+    }
+
+    .profile-picture {
+        max-width: 315px;
+    }
+
+    .lead {
+        font-size: 0.97rem;
+    }
+
+    .image-area {
+        height: 125px;
+    }
+
+    /* Give the teaching courses more room on narrower screens. */
+    .teaching-layout {
+        grid-template-columns:
+            minmax(290px, 43%)
+            minmax(0, 1fr);
+
+        gap: 1.5rem;
+    }
+
+    .visualization-grid {
+        gap: 2rem 1.4rem;
+    }
+}
+
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 900px) {
+    /*
+       The visualization gallery changes from three columns to two.
+    */
+    .visualization-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /*
+       Research illustrations become slightly wider relative to
+       the text before eventually stacking on phones.
+    */
+    .research-figure {
+        width: min(44%, 430px);
+        margin-left: 1.25rem;
+    }
+
+    /*
+       Stack the teaching illustration beneath the Brown course
+       section and before the Maryland section would require a
+       different HTML order. With the current faithful layout, the
+       full course column appears first, followed by the image.
+    */
+    .teaching-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .teaching-illustrations {
+    width: min(100%, 800px);
+    margin-right: auto;
+    margin-left: auto;
+    }
+
+    .teaching-figure {
+    width: 100%;
+    }
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION AND PAGE LAYOUT
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+    /*
+       Bootstrap displays the hamburger button below 768px.
+
+       When the menu opens, the navbar grows vertically and shows
+       more of the beach image behind the links.
+    */
+    .navbar {
+        min-height: auto;
+        padding-top: 0.7rem;
+        padding-bottom: 0.7rem;
+        background-position: center;
+    }
+
+    .nav-width {
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    }
+
+    .navbar-collapse {
+        width: 100%;
+        margin-top: 0.7rem;
+        padding-top: 0.35rem;
+        padding-bottom: 0.35rem;
+
+        background-color: transparent;
+        border: 0;
+    }
+
+    .navbar .nav-link {
+        margin: 0.05rem 0;
+        padding: 0.6rem 0.75rem !important;
+        font-size: 1.05rem;
+    }
+
+    .page-content,
+    .standard-page {
+        padding: 1.25rem 1rem 1rem;
+    }
+
+    /* Homepage switches from two columns to one. */
+    .homepage-layout {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .portrait-column {
+        width: min(78%, 310px);
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .profile-picture {
+        width: 100%;
+        max-width: none;
+    }
+
+    section {
+        margin-bottom: 1.35rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+    }
+
+    .lead {
+        font-size: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.6rem;
+    }
+
+    .page-lead {
+        font-size: 1rem;
+    }
+
+    /* Place the email image beneath its label. */
+    .email-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .email-address {
+        width: min(100%, 450px);
+        max-height: none;
+    }
+
+    /* Homepage gallery images grow naturally on phones. */
+    .image-area {
+        height: auto;
+        min-height: 165px;
+    }
+
+    .image-area img {
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        max-height: 225px;
+    }
+
+    .math-figure figcaption {
+        font-size: 0.95rem;
+    }
+
+    /*
+       Stop floating the research illustrations. They become
+       centered blocks and no longer squeeze the text.
+    */
+    .research-figure {
+        float: none;
+        clear: both;
+
+        width: min(100%, 520px);
+        margin: 1rem auto;
+    }
+
+    .resource-list {
+        padding-left: 1.25rem;
+        font-size: 0.98rem;
+    }
+
+    .resource-section ul.resource-list {
+        padding-left: 0;
+    }
+
+    /*
+       Teaching page is already one column at this width.
+       Remove extra indentation from the course list.
+    */
+    .course-list {
+        padding-left: 0;
+    }
+
+    .course-list li {
+        margin-bottom: 0.7rem;
+        font-size: 1rem;
+    }
+
+    /*
+       The visualization gallery becomes one column.
+    */
+    .visualization-grid {
+        margin-top: 2rem;
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+    }
+
+    .visualization-card {
+        width: min(100%, 560px);
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .feature-title {
+        min-height: 0;
+        font-size: 1.1rem;
+    }
+
+    .visualization-card p {
+        font-size: 0.97rem;
+    }
+
+    /*
+       The two thank-you images stack vertically.
+    */
+    .thank-you-gallery {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .thank-you-gallery figure {
+        width: min(100%, 480px);
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+
+    .page-content,
+    .standard-page {
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    }
+
+    .portrait-column {
+        width: min(88%, 290px);
+    }
+
+    .contact-list li {
+        font-size: 0.97rem;
+    }
+
+    .page-title {
+        font-size: 1.45rem;
+    }
+
+    .content-heading {
+        font-size: 1.18rem;
+    }
+
+    .visualization-image {
+        padding: 0.25rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED-MOTION ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .navbar .nav-link {
+        transition: none;
+    }
+}
